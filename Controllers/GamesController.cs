@@ -11,35 +11,35 @@ namespace gathering_gaia.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GameController : ControllerBase
+    public class GamesController : ControllerBase
     {
-        // GET: api/<GameController>
+        // GET: api/<GamesController>
         [HttpGet]
         public IEnumerable<Game> Get()
         {
-            return new Game[0];
+            return new Game[] { new Game()  };
         }
 
-        // GET api/<GameController>/5
+        // GET api/<GamesController>/5
         [HttpGet("{id}")]
-        public Game Get(int id)
+        public Game Get(string guid)
         {
             return new Game();
         }
 
-        // POST api/<GameController>
+        // POST api/<GamesController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<GameController>/5
+        // PUT api/<GamesController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<GameController>/5
+        // DELETE api/<GamesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
