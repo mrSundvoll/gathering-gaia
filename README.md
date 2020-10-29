@@ -28,18 +28,17 @@ Client development is done using `docker-compose up`. This will host the `api` o
 
 # Gameplay
 
-1. A player create a new game
-1. Players sign up for the game
-1. Game master starts game
-1. All players get 5 dices each
-1. Game master initiates round
-1. All player's dices are rolled (players only sees their own dices)
-1. One player starts with making a bid
-1. Next player either raises the bid or calls "liar"
-1. When someone calls "liar" - compare the two players. One will loose a dice.
-1. The looser of the last round starts bidding the next round.
-1. When a players is out of dices, he/she has lost.
-1. The last player standing wins.
+1. A player create a new game.
+1. Players sign up for the game.
+1. Game master starts game.
+1. All players start with 5 dice each.
+1. In the beginning of each round, all player's dice are rolled. Players can only see their own dice.
+1. The first player starts by making a bid*.
+1. The next player either raises the bid or calls "liar".
+1. When someone calls "liar" - the current bid is compared to the actual number of dice on the table. One player will lose a dice.
+1. The loser of the last round starts the next round by placing the initial bid.
+1. When a player is out of dice, he/she has lost.
+1. The last player standing wins the game.
 
 ## Bid rules
 * Initial bid: <Number of dices> x <Type of dice> (e.g. 7 x 2)
