@@ -1,12 +1,14 @@
 using System;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace LiarsDiceAPI.Models
 {
     public class Player
     {
-        public string UserName { get; set; }
-        public DiceBucket DiceBucket { get; set; }
+        public string UserName { get;}
+        public int DieLeft { get; } = Game.DefaultDice;
+        public DiceBag DiceBag { get; private set; }
 
         [JsonIgnore]
         public Guid UserId { get; }
@@ -15,14 +17,19 @@ namespace LiarsDiceAPI.Models
         {
             UserName = userName;
             UserId = Guid.NewGuid();
-            DiceBucket = new DiceBucket();
+            RollDiceBag();
         }
 
-        public bool HasLost => DiceBucket.Dice.Length <= 1;
+        public bool HasLost => DiceBag.Dice.Count() <= 1;
 
+        public void RollDiceBag()
+        {
+            DiceBag = DieLeft;
+        }
+        
         public void RemoveDice()
         {
-            DiceBucket.RemoveDice();
+            DiceBag = DiceBag.Dice.Count() - 1;
         }
     }
 }

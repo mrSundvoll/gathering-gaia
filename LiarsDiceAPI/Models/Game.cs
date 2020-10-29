@@ -7,10 +7,13 @@ namespace LiarsDiceAPI.Models
     public class Game
     {
         public const int MaxPlayers = 4;
+        public const int DefaultDice = 5;
+        public GameRound CurrentRound { get; private set; }
 
         public Game()
         {
             Id = Guid.NewGuid();
+            GameRegistry.Registry.Add(Id, this);
             Round = 0;
             Players = new Player[] { };
         }
@@ -18,8 +21,8 @@ namespace LiarsDiceAPI.Models
         public Guid Id { get; }
         public int Round { get; }
         public Player[] Players { get; private set; }
-        public IEnumerable<Player> ActivePlayers => Players.Where(player => player.HasLost);
-        public IEnumerable<Player> Losers => Players.Where(player => !player.HasLost);
+        public IEnumerable<Player> ActivePlayers => Players.Where(player => !player.HasLost);
+        public IEnumerable<Player> Losers => Players.Where(player => player.HasLost);
         
         public Player CurrentPlayer { get; }
         public Bid CurrentBid { get; }
@@ -68,6 +71,22 @@ namespace LiarsDiceAPI.Models
         public void Bid(Die die, int nrOfDice)
         {
             throw new NotImplementedException();
+        }
+
+        public void StartRoundWith(Bid initialBid)
+        {
+            CurrentRound = new GameRound(initialBid, Id);
+        }
+
+        public static Game GetGameInstance(Guid guid)
+        {
+            // TODO: Handle Exceptions.
+            return GameRegistry.Registry[guid];
+        }
+
+        public static IEnumerable<Player> GetActivePlayers(Guid guid)
+        {
+            return GetGameInstance(guid).ActivePlayers;
         }
     }
 }
