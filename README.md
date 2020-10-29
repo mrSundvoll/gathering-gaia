@@ -19,3 +19,8 @@ docker run -p 8000:8000 <name>
 7. When someone calls "liar" - compare the two players. One will loose a dice.
 8. When a players is out of dices, he/she has lost.
 9. The last player standing wins.
+
+
+# Bid rules
+Initial bid: <Number of dices> x <Type of dice> (e.g. 7 x 2)
+To raise: Either raise number or type of dice (e.g. 8 x 2 or 7 x 3)
