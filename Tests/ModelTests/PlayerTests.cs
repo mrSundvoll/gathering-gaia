@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using LiarsDiceAPI.Models;
+﻿using LiarsDiceAPI.Models;
 using NUnit.Framework;
 
 namespace Tests.ModelTests
@@ -20,5 +16,30 @@ namespace Tests.ModelTests
                 Assert.That(player.UserName, Is.EqualTo("My name"));
             }
         }
+
+        [TestFixture]
+        public class When_checking_if_player_have_lost
+        {
+            [Test]
+            public void Assure_returns_false_when_number_of_dice_is_more_than_one()
+            {
+                var player = new Player("My name");
+
+                Assert.That(player.HasLost, Is.False);
+            }
+
+            [Test]
+            public void Assure_returns_true_when_number_of_dice_is_one_or_less()
+            {
+                var player = new Player("My name");
+                for (int i = 0; i < DiceBucket.InitialDieCount-1; i++)
+                {
+                    player.RemoveDice();
+                }
+
+                Assert.That(player.HasLost);
+            }
+        }
+
     }
 }

@@ -5,16 +5,19 @@ namespace LiarsDiceAPI.Models
     public class Player
     {
         public string UserName { get; set; }
-        public DiceBucket Dice { get; set; }
+        public DiceBucket DiceBucket { get; set; }
 
         public Player(string userName)
         {
             UserName = userName;
+            DiceBucket = new DiceBucket();
         }
 
-        public bool HasLost()
+        public bool HasLost => DiceBucket.Dice.Length <= 1;
+
+        public void RemoveDice()
         {
-            throw new NotImplementedException();
+            DiceBucket.RemoveDice();
         }
     }
 }
