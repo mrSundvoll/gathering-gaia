@@ -7,7 +7,12 @@ namespace LiarsDiceAPI.Models
         public string UserName { get; set; }
         public DiceBucket Dice { get; set; }
 
-        internal bool IsOutOfDice()
+        public Player(string userName)
+        {
+            UserName = userName;
+        }
+
+        public bool HasLost()
         {
             throw new NotImplementedException();
         }

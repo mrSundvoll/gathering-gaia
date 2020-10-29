@@ -18,8 +18,8 @@ namespace LiarsDiceAPI.Models
         public Guid Id { get; }
         public int Round { get; }
         public Player[] Players { get; }
-        public IEnumerable<Player> ActivePlayers => Players.Where(player => player.IsOutOfDice());
-        public IEnumerable<Player> Losers => Players.Where(player => !player.IsOutOfDice());
+        public IEnumerable<Player> ActivePlayers => Players.Where(player => player.HasLost());
+        public IEnumerable<Player> Losers => Players.Where(player => !player.HasLost());
         public Player CurrentPlayer { get; }
         public Bid CurrentBid { get; }
 
