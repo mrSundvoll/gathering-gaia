@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using gathering_gaia.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,6 +14,12 @@ namespace gathering_gaia.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
+        private IMemoryCache _cache;
+        public GamesController(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
+
         // GET: api/<GamesController>
         [HttpGet]
         public IEnumerable<Game> Get()
@@ -22,15 +29,19 @@ namespace gathering_gaia.Controllers
 
         // GET api/<GamesController>/5
         [HttpGet("{id}")]
-        public Game Get(string guid)
+        public Game Get(Guid id)
         {
-            return new Game();
+            var game = _cache.Get<Game>(id);
+            return game;
         }
 
         // POST api/<GamesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Game Post()
         {
+            var game = new Game();
+            _cache.Set(game.Id, game);
+            return game;
         }
 
         // PUT api/<GamesController>/5
