@@ -15,8 +15,9 @@ docker run -p 8000:8000 <name>
 5. One player starts with making a bid
 6. Next player either raises the bid or calls "liar"
 7. When someone calls "liar" - compare the two players. One will loose a dice.
-8. When a players is out of dices, he/she has lost.
-9. The last player standing wins.
+8. The looser of the last round starts bidding the next round.
+9. When a players is out of dices, he/she has lost.
+10. The last player standing wins.
 
 ## Bid rules
 * Initial bid: <Number of dices> x <Type of dice> (e.g. 7 x 2)
