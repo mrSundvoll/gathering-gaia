@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace LiarsDiceAPI.Models
 {
@@ -7,6 +8,7 @@ namespace LiarsDiceAPI.Models
         public string UserName { get; set; }
         public DiceBucket DiceBucket { get; set; }
 
+        [JsonIgnore]
         public Guid UserId { get; }
 
         public Player(string userName)
