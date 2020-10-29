@@ -1,4 +1,4 @@
-namespace gathering_gaia.Models
+namespace LiarsDiceAPI.Models
 {
     public struct Bid
     {

@@ -9,7 +9,7 @@ spec:
         from: master
   components:
     - name: server
-      src: "."
+      src: LiarsDiceAPI
       ports:
        - name: http
          port: 5000

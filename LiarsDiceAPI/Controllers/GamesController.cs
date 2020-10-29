@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using gathering_gaia.Models;
+using LiarsDiceAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace gathering_gaia.Controllers
+namespace LiarsDiceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
