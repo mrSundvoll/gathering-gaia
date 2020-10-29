@@ -12,6 +12,7 @@ namespace gathering_gaia.Models
         {
             Id = Guid.NewGuid();
             Round = 0;
+            Players = new Player[] { };
         }
 
         public Guid Id { get; }
