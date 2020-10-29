@@ -1,4 +1,8 @@
-# SI Gathering Challenge: Template
+# Liar's dice
+
+This is a web-based implementation of the dice game [the liar's dice](https://en.wikipedia.org/wiki/Liar%27s_dice).
+
+# Running the project
 
 To run the project locally, you need docker:
 
