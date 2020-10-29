@@ -22,5 +22,12 @@ docker run -p 8000:8000 <name>
 
 
 # Bid rules
-Initial bid: <Number of dices> x <Type of dice> (e.g. 7 x 2)
-To raise: Either raise number or type of dice (e.g. 8 x 2 or 7 x 3)
+* Initial bid: <Number of dices> x <Type of dice> (e.g. 7 x 2)
+* To raise: Either raise number or type of dice (e.g. 8 x 2 or 7 x 3)
+* 1's counts as "wild" (the same as the current bid dice)
+
+# Compare rules
+* If there are fewer dices in total on the table than the previous bid
+-> The previous player looses one dice
+* Else if there are a higher or equal number of dices in total
+-> The one calling "liar" will loose a dice
