@@ -7,9 +7,12 @@ namespace LiarsDiceAPI.Models
         public string UserName { get; set; }
         public DiceBucket DiceBucket { get; set; }
 
+        public Guid UserId { get; }
+
         public Player(string userName)
         {
             UserName = userName;
+            UserId = Guid.NewGuid();
             DiceBucket = new DiceBucket();
         }
 

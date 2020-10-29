@@ -15,6 +15,13 @@ namespace Tests.ModelTests
 
                 Assert.That(player.UserName, Is.EqualTo("My name"));
             }
+
+            [Test]
+            public void Assure_guid_is_set()
+            {
+                var player = new Player("My name");
+                Assert.That(player.UserId, Is.Not.Null);
+            }
         }
 
         [TestFixture]

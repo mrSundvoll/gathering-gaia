@@ -17,15 +17,37 @@ namespace LiarsDiceAPI.Models
 
         public Guid Id { get; }
         public int Round { get; }
-        public Player[] Players { get; }
+        public Player[] Players { get; private set; }
         public IEnumerable<Player> ActivePlayers => Players.Where(player => player.HasLost);
         public IEnumerable<Player> Losers => Players.Where(player => !player.HasLost);
+        
         public Player CurrentPlayer { get; }
         public Bid CurrentBid { get; }
 
-        public void JoinGame(Player player)
+        public bool HasStarted => Round > 0;
+
+        public Player JoinGame(string userName)
         {
-            throw new NotImplementedException();
+            if (HasStarted)
+            {
+                throw new InvalidOperationException("Cannot join game that has already started");
+            }
+            if (Players.Length >= MaxPlayers)
+            {
+                throw new InvalidOperationException("Max number of players");
+            }
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new InvalidOperationException("Username cannot be empty");
+            }
+            if (Players.Any(player => userName.Equals(player.UserName, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                throw new InvalidOperationException("User with same name already registered");
+            }
+
+            var player = new Player(userName);
+            Players = Players.Append(player).ToArray();
+            return player;
         }
 
         public void StartGame()
