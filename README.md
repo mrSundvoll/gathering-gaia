@@ -15,8 +15,7 @@ docker run -p 8000:8000 <name>
 3. Game master initiates round
 4. All player's dices are rolled (players only sees their own dices)
 5. One player starts with making a bid
-6. Next player either raises the bid or calls "bløff"
-7. When someone calls "bløff":
-   - compare the two players. One will loose a dice.
+6. Next player either raises the bid or calls "liar"
+7. When someone calls "liar" - compare the two players. One will loose a dice.
 8. When a players is out of dices, he/she has lost.
 9. The last player standing wins.
