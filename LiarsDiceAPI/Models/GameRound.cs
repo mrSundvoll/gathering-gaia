@@ -6,34 +6,63 @@ namespace LiarsDiceAPI.Models
 {
     public class GameRound
     {
-        private readonly Guid _gameId;
+        private readonly Game _game;
 
         // What is the current bid?
         public Bid CurrentBid { get; private set; }
 
-        public GameRound(Bid initialBid, Guid gameId)
+        public GameRound(Game game)
         {
-            _gameId = gameId;
-            CurrentBid = initialBid;
+            _game = game;
+            CurrentBid = default;
             RollDiceForAllPlayers();
         }
 
         private void RollDiceForAllPlayers()
         {
-            var players = Game.GetActivePlayers(_gameId).ToList();
-            players.ForEach(x =>
+            _game.ActivePlayers.ToList().ForEach(x => { x.RollDiceBag(); });
+        }
+
+        public Dictionary<int, int> CountDice()
+        {
+            // kunne brukt array, men ettersom terninger ikke er 0-basert som arrays, så blir det tydeligere med dictionary.
+            var result = new Dictionary<int, int>();
+            var dice = _game.ActivePlayers.ToList().SelectMany(x => x.DiceBag.Dice);
+            dice.ToList().ForEach(x =>
             {
-                x.RollDiceBag(); 
+                if (result.ContainsKey(x))
+                {
+                    result.Add(x, 0);
+                }
+
+                result[x]++;
             });
+            return result;
         }
 
         public void RaiseBid(Bid newBid)
         {
+            if (newBid.Die == 1 || newBid.Die == 6 || newBid.Die <= CurrentBid.Die ||
+                newBid.NrOfDice <= CurrentBid.NrOfDice)
+            {
+                throw new ArgumentException("Cannot place a bid that does not increase die value or number of dice.");
+            }
+
             CurrentBid = newBid;
         }
 
-        public void CallLiar()
+        public void CallLiar(Guid currentPlayerUserId)
         {
+            var totalDiceCount = CountDice();
+            var numBidDice = totalDiceCount[CurrentBid.Die] + totalDiceCount[1];
+
+            _game.EndRound(new GameRoundSummary()
+            {
+                UserWithBid = CurrentBid.UserId,
+                UserThatCalledLiar = currentPlayerUserId,
+                CalledLiarSuccessfully = CurrentBid.NrOfDice < numBidDice
+            });
         }
     }
 }
+

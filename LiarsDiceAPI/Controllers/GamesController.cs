@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using LiarsDiceAPI.Models;
 using LiarsDiceAPI.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
+using LiarsDiceAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,48 +14,68 @@ namespace LiarsDiceAPI.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private IMemoryCache _cache;
-        public GamesController(IMemoryCache memoryCache)
+        private readonly IGameRepository _gameRepository;
+        public GamesController(IGameRepository gameRepository)
         {
-            _cache = memoryCache;
+            _gameRepository = gameRepository;
         }
 
         // GET: api/<GamesController>
         [HttpGet]
-        [Produces(typeof(IEnumerable<Game>))]
-        public ActionResult<IEnumerable<Game>> Get()
+        [Produces(typeof(IEnumerable<GameInfo>))]
+        public ActionResult<IEnumerable<GameInfo>> Get()
         {
-            return new[] { new Game()  };
+            return Ok(_gameRepository.GetAllGames());
         }
 
         // GET api/<GamesController>/5
         [HttpGet("{id}")]
         [Produces(typeof(Game))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Game> Get(Guid id)
         {
-            var game = _cache.Get<Game>(id);
-            if (game == null)
-                throw new NotFoundException("Game not found.");
-            return game;
+            return _gameRepository.GetGameById(id);
         }
 
         // POST api/<GamesController>
+        // Why you cannot use string gameName here:
+        // https://briancaos.wordpress.com/2019/11/12/asp-net-core-api-s-is-an-invalid-start-of-a-value-path-linenumber-0-bytepositioninline-0/
         [HttpPost]
         [Produces(typeof(Game))]
-        public ActionResult<Game> Post()
+        public ActionResult<Game> Post(object gameName)
         {
-            var game = new Game();
-            _cache.Set(game.Id, game);
+
+            var game = new Game(gameName.ToString());
+            _gameRepository.SaveGame(game);
             return game;
         }
 
-        // PUT api/<GamesController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        [HttpPut("{id}/players")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Guid Join(Guid id, [FromBody] string username)
         {
-            return Ok();
+            var game = _gameRepository.GetGameById(id);
+            var player = game.JoinGame(username);
+            return player.UserId;
+        }
+
+        [HttpPut("{id}/start")]
+        public void Start(Guid id, [FromBody] Guid userId)
+        {
+            var game = _gameRepository.GetGameById(id);
+            game.StartGame();
+        }
+
+        [HttpPut("{id}/call")]
+        public void Call(Guid id, [FromBody] Guid userId)
+        {
+
+        }
+
+        [HttpPut("{id}/bid")]
+        public void Call(Guid id, [FromBody] Bid bid)
+        {
+
         }
 
         // DELETE api/<GamesController>/5

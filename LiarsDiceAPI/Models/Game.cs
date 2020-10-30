@@ -1,34 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiarsDiceAPI.Models.Exceptions;
 
 namespace LiarsDiceAPI.Models
 {
     public class Game
     {
         public const int MaxPlayers = 4;
-        public const int DefaultDice = 5;
+        public const int InitialDiceCount = 5;
         public GameRound CurrentRound { get; private set; }
+        public string Name { get; }
         public GameStatus Status { get; private set; } = GameStatus.NotStarted;
 
-        public Game()
+        public Game(string gameName)
         {
             Id = Guid.NewGuid();
+            Name = gameName;
             GameRegistry.Registry.Add(Id, this);
-            Round = 0;
             Players = new Player[] { };
         }
 
         public Guid Id { get; }
-        public int Round { get; }
         public Player[] Players { get; private set; }
         public IEnumerable<Player> ActivePlayers => Players.Where(player => !player.HasLost);
         public IEnumerable<Player> Losers => Players.Where(player => player.HasLost);
-        
-        public Player CurrentPlayer { get; }
-        public Bid CurrentBid { get; }
 
-        public bool HasStarted => Round > 0;
+        public Player CurrentPlayer { get; private set; }
+        public Bid LastBid { get; }
 
         public Player JoinGame(string userName)
         {
@@ -46,7 +45,7 @@ namespace LiarsDiceAPI.Models
             }
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new InvalidOperationException("Username cannot be empty");
+                throw new BadRequestException("Username cannot be empty");
             }
             if (Players.Any(player => userName.Equals(player.UserName, StringComparison.InvariantCultureIgnoreCase)))
             {
@@ -60,7 +59,18 @@ namespace LiarsDiceAPI.Models
 
         public void StartGame()
         {
-            throw new NotImplementedException();
+            if (Status == GameStatus.Running)
+            {
+                throw new InvalidOperationException("Cannot restart a running game");
+            }
+            if (Players.Length <= 1)
+            {
+                throw new InvalidOperationException("Requires more than 1 player");
+            }
+
+            Status = GameStatus.Running;
+            CurrentPlayer = Players[new Random().Next(0, Players.Length - 1)];
+            StartRound();
         }
 
         public void RollDice()
@@ -70,28 +80,28 @@ namespace LiarsDiceAPI.Models
 
         public void Call()
         {
-            throw new NotImplementedException();
+            if (Status == GameStatus.Running)
+            {
+                CurrentRound.CallLiar(CurrentPlayer.UserId);
+            } 
         }
 
         public void Bid(Die die, int nrOfDice)
         {
+            if (Status == GameStatus.Running)
+            {
+                CurrentRound.RaiseBid(new Bid(die, nrOfDice, CurrentPlayer.UserId));
+            }
+        }
+
+        public void StartRound()
+        {
+            CurrentRound = new GameRound(this);
+        }
+
+        public void EndRound(GameRoundSummary gameRoundSummary)
+        {
             throw new NotImplementedException();
-        }
-
-        public void StartRoundWith(Bid initialBid)
-        {
-            CurrentRound = new GameRound(initialBid, Id);
-        }
-
-        public static Game GetGameInstance(Guid guid)
-        {
-            // TODO: Handle Exceptions.
-            return GameRegistry.Registry[guid];
-        }
-
-        public static IEnumerable<Player> GetActivePlayers(Guid guid)
-        {
-            return GetGameInstance(guid).ActivePlayers;
         }
     }
 }
