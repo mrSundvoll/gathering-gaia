@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using LiarsDiceAPI.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace LiarsDiceAPI.CustomExceptionMiddleware
 {
@@ -43,7 +43,7 @@ namespace LiarsDiceAPI.CustomExceptionMiddleware
 
             var message = code == HttpStatusCode.InternalServerError
                 ? "An unexpected error occurred"
-                : JsonConvert.SerializeObject(new { error = ex.Message });
+                : JsonSerializer.Serialize(new { error = ex.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(message);
