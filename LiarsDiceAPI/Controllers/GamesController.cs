@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using LiarsDiceAPI.Models;
 using LiarsDiceAPI.Models.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -25,17 +25,19 @@ namespace LiarsDiceAPI.Controllers
         [Produces(typeof(IEnumerable<Game>))]
         public ActionResult<IEnumerable<Game>> Get()
         {
-            return new Game[] { new Game()  };
+            return new[] { new Game()  };
         }
 
         // GET api/<GamesController>/5
         [HttpGet("{id}")]
         [Produces(typeof(Game))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Game> Get(Guid id)
         {
             var game = _cache.Get<Game>(id);
             if (game == null)
-                throw new GameException("Game not found.");
+                throw new NotFoundException("Game not found.");
             return game;
         }
 

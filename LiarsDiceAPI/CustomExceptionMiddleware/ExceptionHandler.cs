@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using LiarsDiceAPI.Models.Exceptions;
@@ -37,11 +36,13 @@ namespace LiarsDiceAPI.CustomExceptionMiddleware
         {
             var code = HttpStatusCode.InternalServerError; // default value=500 
 
-            if (ex is GameException && ex.Message.Contains("not found"))
+            if (ex is NotFoundException)
                 code = HttpStatusCode.NotFound;
+            else if (ex is BadRequestException)
+                code = HttpStatusCode.BadRequest;
 
             var message = code == HttpStatusCode.InternalServerError
-                ? "An unexpected error occured"
+                ? "An unexpected error occurred"
                 : JsonConvert.SerializeObject(new { error = ex.Message });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
