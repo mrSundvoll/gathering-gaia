@@ -15,7 +15,7 @@ game can now be found under `http://localhost:8080/`.
 # Contribution
 
 Solution consist of a client and api. 
-- The API is at root of this repository and implemented using dotnet core. 
+- The API can be found under [LiarsDiceAPI](./LiarsDiceAPI) and is implemented using dotnet core. 
 - Client can be found under [WebClient](./WebClient).
 
 ## API
