@@ -69,7 +69,7 @@ namespace LiarsDiceAPI.Models
 
             Status = GameStatus.Running;
             CurrentPlayer = Players[new Random().Next(0, Players.Length - 1)];
-            StartRoundWith(new Bid{  });
+            StartRound();
         }
 
         public void RollDice()
