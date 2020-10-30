@@ -1,25 +1,29 @@
 import React from 'react';
-import { MemoryRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 
+import Create from './Create';
 import Game from './Game';
 
 import './App.css';
 
 const App = () => (
-    <MemoryRouter>
+    <Router>
         <Container className="p-3">
             <Jumbotron>
                 <Switch>
-                    <Route path="/">
+                    <Route exact path="/create">
+                        <Create />
+                    </Route>
+                    <Route exact path="/">
                         <Game />
                     </Route>
                 </Switch>
             </Jumbotron>
         </Container>
-    </MemoryRouter>
+    </Router>
 );
 
 export default App;
