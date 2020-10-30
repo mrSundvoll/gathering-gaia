@@ -7,6 +7,16 @@ namespace Tests.ModelTests
     public class GameTests
     {
         [TestFixture]
+        public class When_Creating_A_Game
+        {
+            [Test]
+            public void Assure_Game_Status_Is_NotStarted()
+            {
+                var game = new Game();
+                Assert.That(game.Status, Is.EqualTo(GameStatus.NotStarted));
+            }
+        }
+        [TestFixture]
         public class When_joining_a_game
         {
             [Test]

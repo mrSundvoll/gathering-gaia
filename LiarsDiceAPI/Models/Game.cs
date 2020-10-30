@@ -9,6 +9,7 @@ namespace LiarsDiceAPI.Models
         public const int MaxPlayers = 4;
         public const int DefaultDice = 5;
         public GameRound CurrentRound { get; private set; }
+        public GameStatus Status { get; private set; } = GameStatus.NotStarted;
 
         public Game()
         {
