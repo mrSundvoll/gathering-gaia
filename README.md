@@ -42,7 +42,7 @@ Client development is done using `docker-compose up`. This will host the `api` o
 
 <a name="bid_rules">*</a> Bid rules:
 * Each bid names a dice value (between 1 and 6) and a number of dice (between 1 and the remaining number of dice of all players)
-* Initial bid: <Number of dices> x <Dice value> (e.g. 7 x 2)
+* Initial bid: "Number of dices" x "Dice value" (e.g. 7 x 2)
 * To raise, the player must either raise number or value of the dice (here: at minimim either 8 x 2 or 7 x 3)
 * 1's counts as "wild" (will always count towards the sum of the current bid dice)
 
