@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LiarsDiceAPI.Models;
+using LiarsDiceAPI.Models.Exceptions;
 using NUnit.Framework;
 
 namespace Tests.ModelTests
@@ -98,7 +99,7 @@ namespace Tests.ModelTests
                 game.JoinGame("My name 3");
                 game.JoinGame("My name 4");
 
-                Assert.That(() => game.JoinGame("My name 5"), Throws.InvalidOperationException);
+                Assert.Throws<BadRequestException>(() => game.JoinGame("My name 5"));
             }
 
             [Test]
@@ -106,16 +107,18 @@ namespace Tests.ModelTests
             {
                 var game = new Game("En game");
                 game.JoinGame("My name");
-                Assert.That(() => game.JoinGame("My name"), Throws.InvalidOperationException);
+                Assert.Throws<BadRequestException>(() => game.JoinGame("My name"));
             }
 
             [Test]
             public void Assure_player_username_not_empty()
             {
                 var game = new Game("En game");
-                Assert.That(() => game.JoinGame(null), Throws.InvalidOperationException);
-                Assert.That(() => game.JoinGame(""), Throws.InvalidOperationException);
-                Assert.That(() => game.JoinGame("  "), Throws.InvalidOperationException);
+
+
+                Assert.Throws<BadRequestException>(() => game.JoinGame(null));
+                Assert.Throws<BadRequestException>(() => game.JoinGame(""));
+                Assert.Throws<BadRequestException>(() => game.JoinGame("     "));
             }
         }
 
@@ -136,20 +139,20 @@ namespace Tests.ModelTests
 
                 var players = game.Players;
                 Assert.That(players[0].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
-                game.Bid(3,10);
+                game.Bid(3, 10);
                 Assert.That(players[1].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
-                Assert.Throws<ArgumentException>(() =>game.Bid(3, 10));
-                game.Bid(3,11);
+                Assert.Throws<ArgumentException>(() => game.Bid(3, 10));
+                game.Bid(3, 11);
                 Assert.That(players[2].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
-                game.Bid(3,12);
+                game.Bid(3, 12);
                 Assert.That(players[3].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
-                game.Bid(3,13);
+                game.Bid(3, 13);
                 Assert.That(players[0].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
-                
+
                 game.Call();
-                
+
                 Assert.That(game.RoundSummaries.Count, Is.EqualTo(1));
-                
+
 
 
             }

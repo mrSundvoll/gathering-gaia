@@ -39,14 +39,14 @@ namespace LiarsDiceAPI.Models
             switch (Status)
             {
                 case GameStatus.Running:
-                    throw new InvalidOperationException("Cannot join game that has already started");
+                    throw new BadRequestException("Cannot join game that has already started");
                 case GameStatus.Finished:
-                    throw new InvalidOperationException("Cannot join game that is finished");
+                    throw new BadRequestException("Cannot join game that is finished");
             }
 
             if (Players.Length >= MaxPlayers)
             {
-                throw new InvalidOperationException("Max number of players");
+                throw new BadRequestException("Max number of players");
             }
 
             if (string.IsNullOrWhiteSpace(userName))
@@ -56,7 +56,7 @@ namespace LiarsDiceAPI.Models
 
             if (Players.Any(pl => userName.Equals(pl.UserName, StringComparison.InvariantCultureIgnoreCase)))
             {
-                throw new InvalidOperationException("User with same name already registered");
+                throw new BadRequestException("User with same name already registered");
             }
 
             var player = new Player(userName);
