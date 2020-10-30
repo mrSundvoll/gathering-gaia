@@ -32,10 +32,14 @@ namespace LiarsDiceAPI.Models
 
         public Player JoinGame(string userName)
         {
-            if (HasStarted)
+            switch (Status)
             {
-                throw new InvalidOperationException("Cannot join game that has already started");
+                case GameStatus.Running:
+                    throw new InvalidOperationException("Cannot join game that has already started");
+                case GameStatus.Finished:
+                    throw new InvalidOperationException("Cannot join game that is finished");
             }
+
             if (Players.Length >= MaxPlayers)
             {
                 throw new InvalidOperationException("Max number of players");
