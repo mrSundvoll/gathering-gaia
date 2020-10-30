@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiarsDiceAPI.Models.Exceptions;
 
 namespace LiarsDiceAPI.Models
 {
@@ -44,7 +45,7 @@ namespace LiarsDiceAPI.Models
             }
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new InvalidOperationException("Username cannot be empty");
+                throw new BadRequestException("Username cannot be empty");
             }
             if (Players.Any(player => userName.Equals(player.UserName, StringComparison.InvariantCultureIgnoreCase)))
             {

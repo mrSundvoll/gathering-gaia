@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using LiarsDiceAPI.Models;
+using LiarsDiceAPI.Models.Exceptions;
+using Microsoft.AspNetCore.Http;
 using LiarsDiceAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,10 +31,10 @@ namespace LiarsDiceAPI.Controllers
         // GET api/<GamesController>/5
         [HttpGet("{id}")]
         [Produces(typeof(Game))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Game> Get(Guid id)
         {
-            var game = _gameRepository.GetGameById(id);
-            return game;
+            return _gameRepository.GetGameById(id);
         }
 
         // POST api/<GamesController>
@@ -49,6 +51,7 @@ namespace LiarsDiceAPI.Controllers
         }
 
         [HttpPut("{id}/players")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public Guid Join(Guid id, [FromBody] string username)
         {
             var game = _gameRepository.GetGameById(id);

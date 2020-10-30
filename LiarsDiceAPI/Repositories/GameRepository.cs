@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LiarsDiceAPI.Models;
+using LiarsDiceAPI.Models.Exceptions;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace LiarsDiceAPI.Repositories
@@ -28,7 +29,11 @@ namespace LiarsDiceAPI.Repositories
 
         public Game GetGameById(Guid id)
         {
-            return _cache.Get<Game>(id);
+            var game = _cache.Get<Game>(id);
+            if (game == null)
+                throw new NotFoundException("Game not found.");
+
+            return game;
         }
 
         public void SaveGame(Game game)

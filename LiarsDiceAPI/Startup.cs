@@ -1,3 +1,4 @@
+using LiarsDiceAPI.CustomExceptionMiddleware;
 using LiarsDiceAPI.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,12 +56,10 @@ namespace LiarsDiceAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Liar dice api");
             });
 
+            app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
