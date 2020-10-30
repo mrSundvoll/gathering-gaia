@@ -27,14 +27,13 @@ namespace LiarsDiceAPI.Models
         {
             // kunne brukt array, men ettersom terninger ikke er 0-basert som arrays, så blir det tydeligere med dictionary.
             var result = new Dictionary<int, int>();
-            var dice = _game.ActivePlayers.ToList().SelectMany(x => x.DiceBag.Dice);
-            dice.ToList().ForEach(x =>
+            var dice = _game.ActivePlayers.ToList().SelectMany(x => x.DiceBag.Dice).ToList();
+            dice.ForEach(x =>
             {
-                if (result.ContainsKey(x))
+                if (!result.ContainsKey(x))
                 {
                     result.Add(x, 0);
                 }
-
                 result[x]++;
             });
             return result;
@@ -42,8 +41,8 @@ namespace LiarsDiceAPI.Models
 
         public void RaiseBid(Bid newBid)
         {
-            if (newBid.Die == 1 || newBid.Die == 6 || newBid.Die <= CurrentBid.Die ||
-                newBid.NrOfDice <= CurrentBid.NrOfDice)
+            if (newBid.Die == 1 || newBid.Die == 6 || (newBid.Die <= CurrentBid.Die &&
+                newBid.NrOfDice <= CurrentBid.NrOfDice))
             {
                 throw new ArgumentException("Cannot place a bid that does not increase die value or number of dice.");
             }

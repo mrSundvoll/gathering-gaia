@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using LiarsDiceAPI.Models;
 using NUnit.Framework;
@@ -115,6 +116,42 @@ namespace Tests.ModelTests
                 Assert.That(() => game.JoinGame(null), Throws.InvalidOperationException);
                 Assert.That(() => game.JoinGame(""), Throws.InvalidOperationException);
                 Assert.That(() => game.JoinGame("  "), Throws.InvalidOperationException);
+            }
+        }
+
+        [TestFixture]
+        public class When_Running_A_Game
+        {
+            private Game game;
+
+            [Test]
+            public void Then_Assure_Rounds_And_Players_Are_Handled_Correctly()
+            {
+                game = new Game("TestGame");
+                game.JoinGame("Terje");
+                game.JoinGame("Kjell Erik");
+                game.JoinGame("Kjell Einar");
+                game.JoinGame("Thomas");
+                game.StartGame();
+
+                var players = game.Players;
+                Assert.That(players[0].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
+                game.Bid(3,10);
+                Assert.That(players[1].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
+                Assert.Throws<ArgumentException>(() =>game.Bid(3, 10));
+                game.Bid(3,11);
+                Assert.That(players[2].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
+                game.Bid(3,12);
+                Assert.That(players[3].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
+                game.Bid(3,13);
+                Assert.That(players[0].UserId, Is.EqualTo(game.CurrentPlayer.UserId));
+                
+                game.Call();
+                
+                Assert.That(game.RoundSummaries.Count, Is.EqualTo(1));
+                
+
+
             }
         }
     }

@@ -23,6 +23,6 @@ namespace LiarsDiceAPI.Models
 
         public static implicit operator int(Die d) => d._value;
 
-        public static implicit operator Die(int val) => Roll();
+        public static implicit operator Die(int val) => new Die(val);
     }
 }
