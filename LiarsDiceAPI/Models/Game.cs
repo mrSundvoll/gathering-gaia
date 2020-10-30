@@ -29,7 +29,7 @@ namespace LiarsDiceAPI.Models
         public IEnumerable<Player> ActivePlayers => Players.Where(player => !player.HasLost);
         public IEnumerable<Player> Losers => Players.Where(player => player.HasLost);
 
-        public Player CurrentPlayer => Players[_currentPlayerIndex];
+        public Player CurrentPlayer => Players.Length == 0 ? null : Players[_currentPlayerIndex];
         private int _currentPlayerIndex;
         
         public Bid LastBid { get; }
