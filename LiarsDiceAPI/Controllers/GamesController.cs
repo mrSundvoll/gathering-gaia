@@ -20,14 +20,16 @@ namespace LiarsDiceAPI.Controllers
 
         // GET: api/<GamesController>
         [HttpGet]
-        public IEnumerable<Game> Get()
+        [Produces(typeof(IEnumerable<Game>))]
+        public ActionResult<IEnumerable<Game>> Get()
         {
             return new Game[] { new Game()  };
         }
 
         // GET api/<GamesController>/5
         [HttpGet("{id}")]
-        public Game Get(Guid id)
+        [Produces(typeof(Game))]
+        public ActionResult<Game> Get(Guid id)
         {
             var game = _cache.Get<Game>(id);
             return game;
@@ -35,7 +37,8 @@ namespace LiarsDiceAPI.Controllers
 
         // POST api/<GamesController>
         [HttpPost]
-        public Game Post()
+        [Produces(typeof(Game))]
+        public ActionResult<Game> Post()
         {
             var game = new Game();
             _cache.Set(game.Id, game);
@@ -44,14 +47,16 @@ namespace LiarsDiceAPI.Controllers
 
         // PUT api/<GamesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] string value)
         {
+            return Ok();
         }
 
         // DELETE api/<GamesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            return Ok();
         }
     }
 }

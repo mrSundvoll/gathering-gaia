@@ -1,15 +1,35 @@
 using System;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace LiarsDiceAPI.Models
 {
     public class Player
     {
-        public string UserName { get; set; }
-        public DiceBucket Dice { get; set; }
+        public string UserName { get;}
+        public int DieLeft { get; } = Game.DefaultDice;
+        public DiceBag DiceBag { get; private set; }
 
-        internal bool IsOutOfDice()
+        [JsonIgnore]
+        public Guid UserId { get; }
+
+        public Player(string userName)
         {
-            throw new NotImplementedException();
+            UserName = userName;
+            UserId = Guid.NewGuid();
+            RollDiceBag();
+        }
+
+        public bool HasLost => DiceBag.Dice.Count() <= 1;
+
+        public void RollDiceBag()
+        {
+            DiceBag = DieLeft;
+        }
+        
+        public void RemoveDice()
+        {
+            DiceBag = DiceBag.Dice.Count() - 1;
         }
     }
 }
