@@ -81,7 +81,7 @@ namespace LiarsDiceAPI.Models
         {
             if (Status == GameStatus.Running)
             {
-                CurrentRound.CallLiar();
+                CurrentRound.CallLiar(CurrentPlayer.UserId);
             } 
         }
 
@@ -98,7 +98,7 @@ namespace LiarsDiceAPI.Models
             CurrentRound = new GameRound(this);
         }
 
-        public void EndRound()
+        public void EndRound(GameRoundSummary gameRoundSummary)
         {
             throw new NotImplementedException();
         }
