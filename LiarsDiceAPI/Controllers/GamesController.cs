@@ -45,11 +45,30 @@ namespace LiarsDiceAPI.Controllers
             return game;
         }
 
-        // PUT api/<GamesController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        [HttpPut("{id}/players")]
+        public Guid Join(Guid id, [FromBody] string username)
         {
-            return Ok();
+            var game = _cache.Get<Game>(id);
+            var player = game.JoinGame(username);
+            return player.UserId;
+        }
+
+        [HttpPut("{id}/start")]
+        public void Start(Guid id, [FromBody] Guid userId)
+        {
+            
+        }
+
+        [HttpPut("{id}/call")]
+        public void Call(Guid id, [FromBody] Guid userId)
+        {
+            
+        }
+
+        [HttpPut("{id}/bid")]
+        public void Call(Guid id, [FromBody] Bid bid)
+        {
+            
         }
 
         // DELETE api/<GamesController>/5
