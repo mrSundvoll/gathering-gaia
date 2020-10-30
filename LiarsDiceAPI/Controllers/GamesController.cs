@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using LiarsDiceAPI.Models;
+using LiarsDiceAPI.Models.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -32,6 +34,8 @@ namespace LiarsDiceAPI.Controllers
         public ActionResult<Game> Get(Guid id)
         {
             var game = _cache.Get<Game>(id);
+            if (game == null)
+                throw new GameException("Game not found.");
             return game;
         }
 
