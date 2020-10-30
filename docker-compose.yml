@@ -5,8 +5,6 @@ services:
     ports:
       - "5000:5000"
   web:
-    image: nginx:latest
-    volumes:
-      - ./WebClient/:/usr/share/nginx/html/
+    build: ./WebClient
     ports:
       - "8080:80"
