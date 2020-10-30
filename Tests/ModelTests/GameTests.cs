@@ -12,7 +12,7 @@ namespace Tests.ModelTests
             [Test]
             public void Assure_Game_Status_Is_NotStarted()
             {
-                var game = new Game();
+                var game = new Game("En game");
                 Assert.That(game.Status, Is.EqualTo(GameStatus.NotStarted));
             }
         }
@@ -22,7 +22,7 @@ namespace Tests.ModelTests
             [Test]
             public void Assure_player_is_added()
             {
-                var game = new Game();
+                var game = new Game("En game");
                 game.JoinGame("My name");
 
                 Assert.That(game.Players.FirstOrDefault().UserName, Is.EqualTo("My name"));
@@ -31,7 +31,7 @@ namespace Tests.ModelTests
             [Test]
             public void Assure_cant_join_game_with_max_players()
             {
-                var game = new Game();
+                var game = new Game("En game");
                 game.JoinGame("My name");
                 game.JoinGame("My name 2");
                 game.JoinGame("My name 3");
@@ -43,7 +43,7 @@ namespace Tests.ModelTests
             [Test]
             public void Assure_player_username_must_be_unique()
             {
-                var game = new Game();
+                var game = new Game("En game");
                 game.JoinGame("My name");
                 Assert.That(() => game.JoinGame("My name"), Throws.InvalidOperationException);
             }
@@ -51,7 +51,7 @@ namespace Tests.ModelTests
             [Test]
             public void Assure_player_username_not_empty()
             {
-                var game = new Game();
+                var game = new Game("En game");
                 Assert.That(() => game.JoinGame(null), Throws.InvalidOperationException);
                 Assert.That(() => game.JoinGame(""), Throws.InvalidOperationException);
                 Assert.That(() => game.JoinGame("  "), Throws.InvalidOperationException);

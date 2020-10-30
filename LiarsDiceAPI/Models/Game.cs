@@ -9,11 +9,13 @@ namespace LiarsDiceAPI.Models
         public const int MaxPlayers = 4;
         public const int DefaultDice = 5;
         public GameRound CurrentRound { get; private set; }
+        public string Name { get; }
         public GameStatus Status { get; private set; } = GameStatus.NotStarted;
 
-        public Game()
+        public Game(string gameName)
         {
             Id = Guid.NewGuid();
+            Name = gameName;
             GameRegistry.Registry.Add(Id, this);
             Round = 0;
             Players = new Player[] { };
