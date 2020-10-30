@@ -22,7 +22,7 @@ namespace LiarsDiceAPI.Models
             RollDiceBag();
         }
 
-        public bool HasLost => DieLeft <= 1;
+        public bool HasLost => DieLeft < 1;
 
         public void RollDiceBag()
         {

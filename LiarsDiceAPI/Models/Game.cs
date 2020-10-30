@@ -155,13 +155,27 @@ namespace LiarsDiceAPI.Models
             {
                 if (Players[i].UserId.Equals(losingPlayerGuid))
                 {
-                    // loser begins next round
-                    _currentPlayerIndex = i;
-                    Players[i].RemoveDice();
+                    var losingPlayer = Players[i];
+                    losingPlayer.RemoveDice();
+                    
+                    if (losingPlayer.HasLost)
+                    {
+                        NotifyPlayerOfLoss(losingPlayer);
+                    }
+                    else
+                    {
+                        // loser begins next round
+                        _currentPlayerIndex = i;    
+                    }
                     break;
                 }
             }
             StartRound();
+        }
+
+        private void NotifyPlayerOfLoss(Player losingPlayer)
+        {
+            throw new NotImplementedException();
         }
     }
 }
